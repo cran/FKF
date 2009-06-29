@@ -1,5 +1,12 @@
 fkf <- function(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
 {
+    if(any(c(missing(a0), missing(P0), missing(dt), missing(ct), missing(Tt),
+             missing(Zt), missing(HHt), missing(GGt), missing(yt)))){
+
+      stop("None of the input arguments 'a0', 'P0', 'dt', 'ct', 'Tt', 'Zt',",
+           "'HHt', 'GGt', and 'yt' must be misssing.")
+    }
+
     ## 'check.input' should always be 'TRUE' unless the performance
     ## becomes crucial and correctness of the arguments concerning
     ## dimensions, class, storage.mode and absence of 'NA's is ensured.
@@ -22,7 +29,6 @@ fkf <- function(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
                  paste(names(stor.mode)[stor.mode != "double"],
                        collapse = "', '"),
                  "' is not 'double'!\n", sep = "")
-
         }
 
         ## Check classes of arguments
@@ -131,5 +137,4 @@ fkf <- function(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
 
     return(ans)
 }
-
 
