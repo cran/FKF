@@ -1,5 +1,6 @@
 \name{fkf}
 \alias{fkf}
+%\alias{FKF}
 \title{Fast Kalman filter}
 % <---------------------------------------------------------------------->
 \description{
@@ -7,7 +8,8 @@
   This function allows for fast and flexible Kalman filtering. The
   state-space parameters are allowed to be time-varying and intercepts
   are supported in both, the transition equation and the measurement
-  equation. \code{fkf} wraps the \code{C}-function \code{FKF} which
+  equation. In addition \dQuote{NA}-values in the observations are
+  supported. \code{fkf} wraps the \code{C}-function \code{FKF} which
   fully relies on linear algebra subroutines contained in BLAS and
   LAPACK.
 
@@ -34,11 +36,11 @@ fkf(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
     the transition equation (see \bold{Details}).}
   \item{GGt}{An \code{array} giving the variance of the disturbances of
     the measurement equation (see \bold{Details}).}
-  \item{yt}{A \code{matrix} containing the observations. \code{yt} must
-    not contain \dQuote{NA}-values (see \bold{Details}).}
+  \item{yt}{A \code{matrix} containing the
+    observations. \dQuote{NA}-values are allowed (see \bold{Details}).}
   \item{check.input}{A \code{logical} stating whether the input shall be
-    checked for consistency (\dQuote{storage.mode}, \dQuote{class},
-    dimensionality, and \dQuote{NA's}) (see \bold{Details}).}
+    checked for consistency (\dQuote{storage.mode}, \dQuote{class}, and
+    dimensionality) (see \bold{Details}).}
 }
 % <---------------------------------------------------------------------->
 \details{
@@ -72,15 +74,25 @@ fkf(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
 
   Note that \code{fkf} takes as input \code{HHt} and \code{GGt} which
   corresponds to \eqn{H_t H_t'}{H[t] \%*\% t(H[t])} and \eqn{G_t
-  G_t'}{G[t] \%*\% t(G[t])}. \cr
+    G_t'}{G[t] \%*\% t(G[t])}. \cr
+
+% <------------------------------------->
+\strong{NA-values:}
+
+  NA-values in the observation matrix \code{yt} are supported.  If
+  particular observations \code{yt[,i]} contain NAs, the NA-values are
+  removed and the measurement equation is adjusted accordingly.  When
+  the full vector \code{yt[,i]} is missing the Kalman filter reduces to
+  a prediction step.  See package vignette for details.
 
 % <------------------------------------->
 \strong{Parameters:}
 
   The parameters can either be constant or deterministic
   time-varying. Assume the number of observations is \eqn{n}
-  (i.e. \eqn{y = (y_t)_{t = 1, \ldots, n}}{y = y[,1:n]}). Then, the
-  parameters admit the following classes and dimensions:
+  (i.e. \eqn{y = (y_t)_{t = 1, \ldots, n}, y_t = (y_{t1}, \ldots,
+  y_{td})}{y = y[,1:n]}). Then, the parameters admit the following
+  classes and dimensions:
 
   \tabular{ll}{
     \code{dt} \tab either a \eqn{m \times n}{m * n} (time-varying) or a \eqn{m \times
@@ -104,7 +116,7 @@ fkf(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
 
   \code{check.input} should always be \code{TRUE} unless the performance
   becomes crucial and correctness of the arguments concerning
-  dimensions, class, storage.mode and absence of 'NA's is ensured.
+  dimensions, class, and storage.mode is ensured.
 
   \bold{Note:}\cr
   The class of the arguments if of importance. For instance, to check
@@ -170,11 +182,11 @@ fkf(a0, P0, dt, ct, Tt, Zt, HHt, GGt, yt, check.input = TRUE)
   \code{Ft} \tab A \eqn{d \times d \times n}{d * d * n}-array which
   contains the variances of \code{vt}, i.e. \eqn{F_t = var(v_t)}{Ft[,,t]
     = var(v[,t])}.\cr
-  \code{Kt} \tab A \eqn{m \times d \times n}-array containing the \dQuote{Kalman gain}. \cr
+  \code{Kt} \tab A \eqn{m \times d \times n}{m * d * n}-array containing the \dQuote{Kalman gain}. \cr
   \code{logLik} \tab The log-likelihood. \cr
   \code{status} \tab A \code{vector} which contains the status of LAPACK's
-  \code{dpotri} and \code{dpotrf}. \eqn{(0, 0)} means sucessful exit.\cr
-  \code{sys.time} \tab The time elapsed as an object of class \dQuote{proc\_time}. 
+  \code{dpotri} and \code{dpotrf}. \eqn{(0, 0)} means successful exit.\cr
+  \code{sys.time} \tab The time elapsed as an object of class \dQuote{proc\_time}.
 }
 
 The first element of both \code{at} and \code{Pt} is filled with the
@@ -188,19 +200,37 @@ function arguments \code{a0} and \code{P0}, and the last, i.e. the (n +
 % <---------------------------------------------------------------------->
 \references{
 
-  Harvey, Andrew C. (1990) \emph{Forecasting, Structural Time Series
+  Harvey, Andrew C. (1990). \emph{Forecasting, Structural Time Series
     Models and the Kalman Filter}.  Cambridge University Press.
-
+  
   Hamilton, James D. (1994). \emph{Time Series Analysis}.  Princeton
   University Press.
 
-  Zivot, E. and Wang, J. (2005). \emph{Modeling Financial Time
-    Series with S-PLUS}.
-  Springer-Verlag, New York.
+  Koopman, S. J. \& Shephard, N. \& Doornik, J. A. (1999).
+  \emph{Statistical algorithms for models in state space using SsfPack
+  2.2}. Econometrics Journal, Royal Economic Society, vol. 2(1), pages
+  107-160.
+
+%   Zivot, E. \& Wang, J. (2005). \emph{Modeling Financial Time Series
+%     with S-PLUS}.  Springer-Verlag, New York.
 
 }
 % <---------------------------------------------------------------------->
-\author{David Luethi, Philipp Erb}
+\author{
+David Luethi \cr
+Clariden Leu SA
+(\url{http://www.claridenleu.com}) \cr
+
+Philipp Erb \cr
+Zurich Global Corporate Switzerland
+(\url{http://www.zurich.com}) \cr
+
+Simon Otziger \cr
+Institute of Data Analysis and Process Design
+(\url{http://www.idp.zhaw.ch}) \cr
+
+Maintainer: Philipp Erb <erb.philipp@gmail.com>
+}
 % <---------------------------------------------------------------------->
 \seealso{\code{\link[=plot.fkf]{plot}} to visualize and analyze
   \code{fkf}-objects,
@@ -208,62 +238,61 @@ function arguments \code{a0} and \code{P0}, and the last, i.e. the (n +
   \link[sspir]{kfilter} from package \code{sspir}.}
 % <---------------------------------------------------------------------->
 \examples{
-## This example shows how to fit an AR(2) model using the Kalman filter.
-
-n <- 200
+## This example shows how to fit an ARMA(2, 1) model using the Kalman filter.
+n <- 1000
 
 ## Set the AR parameters
-ar1 <- -0.24
-ar2 <- 0.6
-sigma <- .4
+ar1 <- 0.6
+ar2 <- 0.2
+ma1 <- -0.2
+sigma <- sqrt(0.2)
 
-## Sample from an AR(2) process
-a <- arima.sim(model = list(ar = c(ar1, ar2)),
-               n = n, innov = rnorm(n) * sigma)
+## Sample from an ARMA(2, 1) process
+a <- arima.sim(model = list(ar = c(ar1, ar2), ma = ma1), n = n,
+               innov = rnorm(n) * sigma)
 
-## Create a state space representation out of the three AR parameters
-ar2.to.state.space <- function(ar1, ar2, sigma){
-    Tt <- matrix(c(ar1, 1, ar2, 0), ncol = 2)
+## Create a state space representation out of the four ARMA parameters
+arma21ss <- function(ar1, ar2, ma1, sigma) {
+    Tt <- matrix(c(ar1, ar2, 1, 0), ncol = 2)
     Zt <- matrix(c(1, 0), ncol = 2)
-    ct <- matrix(0.0)
-    dt <- matrix(0.0, nrow = 2)
-    GGt <- matrix(0.0)
-    HHt <- matrix(c(sigma^2, 0, 0, 0), ncol = 2)
-    a0 <- as.numeric(c(0, 0))
-    P0 <- matrix(c(100,0,0,100), ncol = 2)
-    return(list(a0 = a0, P0 = P0, ct = ct, dt = dt,
-                Zt = Zt, Tt = Tt, GGt = GGt, HHt = HHt))
+    ct <- matrix(0)
+    dt <- matrix(0, nrow = 2)
+    GGt <- matrix(0)
+    H <- matrix(c(1, ma1), nrow = 2) * sigma
+    HHt <- H \%*\% t(H)
+    a0 <- c(0, 0)
+    P0 <- matrix(1e6, nrow = 2, ncol = 2)
+    return(list(a0 = a0, P0 = P0, ct = ct, dt = dt, Zt = Zt, Tt = Tt, GGt = GGt,
+                HHt = HHt))
 }
 
 ## The objective function passed to 'optim'
-objective <- function(theta, yt)
-{
-    sp <- ar2.to.state.space(theta["ar1"], theta["ar2"], theta["sigma"])
-
-    ans <- fkf(a0 = sp$a0, P0 = sp$P0,
-               dt = sp$dt, ct = sp$ct, Tt = sp$Tt, Zt = sp$Zt,
-               HHt = sp$HHt, GGt = sp$GGt, yt = yt, check.input = FALSE)
-
+objective <- function(theta, yt) {
+    sp <- arma21ss(theta["ar1"], theta["ar2"], theta["ma1"], theta["sigma"])
+    ans <- fkf(a0 = sp$a0, P0 = sp$P0, dt = sp$dt, ct = sp$ct, Tt = sp$Tt,
+               Zt = sp$Zt, HHt = sp$HHt, GGt = sp$GGt, yt = yt)
     return(-ans$logLik)
 }
 
-theta <- c(ar1 = 0, ar2 = 0, sigma = 1)
-fit <- optim(theta, objective, yt = rbind(a))
+theta <- c(ar = c(0, 0), ma1 = 0, sigma = 1)
+fit <- optim(theta, objective, yt = rbind(a), hessian = TRUE)
 fit
 
-## Filter the series with estimated parameter values
-sp <- ar2.to.state.space(fit$par["ar1"], fit$par["ar2"], fit$par["sigma"])
+## Confidence intervals
+rbind(fit$par - qnorm(0.975) * sqrt(diag(solve(fit$hessian))),
+      fit$par + qnorm(0.975) * sqrt(diag(solve(fit$hessian))))
 
-ans <- fkf(a0 = sp$a0, P0 = sp$P0,
-           dt = sp$dt, ct = sp$ct, Tt = sp$Tt, Zt = sp$Zt,
-           HHt = sp$HHt, GGt = sp$GGt, yt = rbind(a))
+## Filter the series with estimated parameter values
+sp <- arma21ss(fit$par["ar1"], fit$par["ar2"], fit$par["ma1"], fit$par["sigma"])
+ans <- fkf(a0 = sp$a0, P0 = sp$P0, dt = sp$dt, ct = sp$ct, Tt = sp$Tt,
+           Zt = sp$Zt, HHt = sp$HHt, GGt = sp$GGt, yt = rbind(a))
 
 ## Compare the prediction with the realization
-plot(ans, at.idx=1, att.idx = NA, CI = NA)
+plot(ans, at.idx = 1, att.idx = NA, CI = NA)
 lines(a, lty = "dotted")
 
 ## Compare the filtered series with the realization
-plot(ans, at.idx=NA, att.idx = 1, CI = NA)
+plot(ans, at.idx = NA, att.idx = 1, CI = NA)
 lines(a, lty = "dotted")
 
 ## Check whether the residuals are Gaussian
@@ -271,11 +300,8 @@ plot(ans, type = "resid.qq")
 
 ## Check for linear serial dependence through 'acf'
 plot(ans, type = "acf")
-
 }
 % <---------------------------------------------------------------------->
 \keyword{algebra}
 \keyword{models}
 \keyword{multivariate}
-
-
