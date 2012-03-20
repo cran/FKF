@@ -1,0 +1,14 @@
+52e21f9dc03eb663589c7387c19a32df *ChangeLog
+a3187b74092d3fb9f69b1669160d0539 *DESCRIPTION
+5d6f304e32d14be5fb7250bda7d3766f *FKF-Ex.R
+2228e977ebea8966e27929f43e39cb67 *Fixme
+d73f9a05e2a2914ec9d098bdb5d2868d *NAMESPACE
+37e8bd2f72a0525696539c7aa4b9f449 *R/fkf.r
+8c4eb007a276eb055c8414bc74629ebb *R/plot.fkf.r
+334f0de6ed55dc79f59addf091097353 *inst/unitTests/Makefile
+3052af1b1f45e66449dc2fd6a4aadf4f *inst/unitTests/runit.filter.R
+39a3ff5bc83e140f791a42d4edd5a8d7 *man/fkf.Rd
+2fc0b4c8aa5f873f9e5c365ca6896539 *man/plot.fkf.Rd
+2a6f9e9e044a78154d3cfda5936d6f48 *src/Makevars
+875895610964b1e8fc992b1072c15ab9 *src/fkflib.c
+1c247cb653263b07a3f8b514ab6fea80 *tests/doRUnit.R
