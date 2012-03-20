@@ -1,14 +1,14 @@
-pkgname <- "FKF"
-source(file.path(R.home("share"), "R", "examples-header.R"))
-options(warn = 1)
-library('FKF')
-
-assign(".oldSearch", search(), pos = 'CheckExEnv')
-cleanEx()
-nameEx("fkf")
-### * fkf
-
-flush(stderr()); flush(stdout())
+# pkgname <- "FKF"
+# source(file.path(R.home("share"), "R", "examples-header.R"))
+# options(warn = 1)
+# library('FKF')
+# 
+# assign(".oldSearch", search(), pos = 'CheckExEnv')
+# cleanEx()
+# nameEx("fkf")
+# ### * fkf
+# 
+# flush(stderr()); flush(stdout())
 
 ### Name: fkf
 ### Title: Fast Kalman filter
@@ -130,11 +130,11 @@ legend("top", c("Nile flow data", "Local level (StructTS)", "Local level (fkf)")
 
 
 
-cleanEx()
-nameEx("plot.fkf")
+#cleanEx()
+#nameEx("plot.fkf")
 ### * plot.fkf
 
-flush(stderr()); flush(stdout())
+#flush(stderr()); flush(stdout())
 
 ### Name: plot.fkf
 ### Title: Plotting fkf Objects
@@ -185,11 +185,11 @@ plot(fkf.obj, type = "acf", na.action = na.pass)
 
 ### * <FOOTER>
 ###
-cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
-grDevices::dev.off()
+#cat("Time elapsed: ", proc.time() - get("ptime", pos = 'CheckExEnv'),"\n")
+#grDevices::dev.off()
 ###
 ### Local variables: ***
 ### mode: outline-minor ***
 ### outline-regexp: "\\(> \\)?### [*]+" ***
 ### End: ***
-quit('no')
+#quit('no')

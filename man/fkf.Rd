@@ -229,8 +229,9 @@ Maintainer: Philipp Erb <erb.philipp@gmail.com>
 % <---------------------------------------------------------------------->
 \seealso{\code{\link[=plot.fkf]{plot}} to visualize and analyze
   \code{fkf}-objects, \code{\link{KalmanRun}} from the stats package,
-  function \link[dlm]{dlmFilter} from package \code{dlm}, and function
-  \link[sspir]{kfilter} from package \code{sspir}.}
+  function \link[dlm]{dlmFilter} from package \code{dlm}.}
+  % This package has been orphaned on 2013-12-20: the maintainer address bounces and mail to other known addresses elicited no response. Then archived. CRAN
+  % , and function \link[sspir]{kfilter} from package \code{sspir}
 % <---------------------------------------------------------------------->
 \examples{
 ## <--------------------------------------------------------------------------->
