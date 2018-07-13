@@ -1,3 +1,11 @@
+2018-07-01 Paul Smith
+
+FKF V0.1.4
+  * section Maintainer updated
+  * Fixed check.inputs = FALSE example which was passing incorrect 
+  format variables resulting in ASAN and valgrind errors
+  * Moved function documentaion to use roxygen2 for generation 
+
 2014-01-03 Aleksandar Spasojevic
 
 FKF V0.1.2

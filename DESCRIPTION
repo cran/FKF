@@ -1,10 +1,10 @@
 Package: FKF
 Type: Package
-Version: 0.1.3
+Version: 0.1.4
 Date: 2012-03-20
 Title: Fast Kalman Filter
 Author: David Luethi, Philipp Erb, Simon Otziger
-Maintainer: Marc Weibel <marc.weibel@zhaw.ch>
+Maintainer: Paul Smith <paul@waternumbers.co.uk>
 Depends: R(>= 2.8), RUnit
 Description: This is a fast and flexible implementation of the Kalman
         filter, which can deal with NAs. It is entirely written in C
@@ -17,7 +17,8 @@ Description: This is a fast and flexible implementation of the Kalman
 Imports: graphics
 License: GPL (>= 2)
 Encoding: latin1
-Packaged: 2014-02-10 15:38:44 UTC; aleksandarspasojevic
+Packaged: 2018-07-02 09:23:42 UTC; paul
 Repository: CRAN
-Date/Publication: 2014-02-10 18:15:20
+Date/Publication: 2018-07-13 14:50:08 UTC
 NeedsCompilation: yes
+RoxygenNote: 6.0.1
