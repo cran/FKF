@@ -1,3 +1,12 @@
+2018-07-16 Paul Smith
+
+FKF V0.1.5
+  * Correction of incorrect submission in v0.1.4 of the fix to the
+	check.inputs = FALSE example
+  * Fixed simmilar ASAN and valgrind error in unit tests
+  * Stopped RUnit tests writing files which caused CRAN build errors due
+	to directory permissions
+	
 2018-07-01 Paul Smith
 
 FKF V0.1.4

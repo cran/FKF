@@ -21,7 +21,7 @@ test.compare.to.stats <- function()
   }
   fit.fkf <- optim(c(HHt, GGt), StructTS.level, yt = yt,
                    a0 = a0, P0 = P0, dt = dt, ct = ct,
-                   Zt = Zt, Tt = Tt, check.input = FALSE)
+                   Zt = Zt, Tt = Tt)
 
   checkTrue(all((fit.fkf$par / fit.stats$coef - 1) < 0.01),
             "Difference between 'FKF' and 'stats' implementation is greater than 1 percent!")
