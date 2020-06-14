@@ -92,7 +92,7 @@ fit.fkf <- optim(c(HHt = var(y, na.rm = TRUE) * .5,
                  fn = function(par, ...)
                  -fkf(HHt = matrix(par[1]), GGt = matrix(par[2]), ...)$logLik,
                  yt = rbind(y), a0 = a0, P0 = P0, dt = dt, ct = ct,
-                 Zt = Zt, Tt = Tt, check.input = FALSE)
+                 Zt = Zt, Tt = Tt)
 
 ## Filter Nile data with estimated parameters:
 fkf.obj <- fkf(a0, P0, dt, ct, Tt, Zt, HHt = matrix(fit.fkf$par[1]),
@@ -113,9 +113,8 @@ legend("top", c("Nile flow data", "Local level (StructTS)", "Local level (fkf)")
 
 
 ## ----ex_3---------------------------------------------------------------------
-## Local level model for the treering width data.
 ## Transition equation:
-## alpha[t+1] = alpha[t] + eta[t], eta[t] ~ N(0, HHt)          
+## alpha[t+1] = alpha[t] + eta[t], eta[t] ~ N(0, HHt)
 ## Measurement equation:
 ## y[t] = alpha[t] + eps[t], eps[t] ~  N(0, GGt)
 
@@ -123,8 +122,8 @@ y <- treering
 y[c(3, 10)] <- NA  # NA values can be handled
 
 ## Set constant parameters:
-dt <- ct <- matrix(0) 
-Zt <- Tt <- matrix(1)
+dt <- ct <- matrix(0)
+Zt <- Tt <- matrix(1) 
 a0 <- y[1]            # Estimation of the first width
 P0 <- matrix(100)     # Variance of 'a0'
 
@@ -132,13 +131,13 @@ P0 <- matrix(100)     # Variance of 'a0'
 fit.fkf <- optim(c(HHt = var(y, na.rm = TRUE) * .5,
                    GGt = var(y, na.rm = TRUE) * .5),
                  fn = function(par, ...)
-                 -fkf(HHt = matrix(par[1]), GGt = matrix(par[2]), ...)$logLik,
+                   -fkf(HHt = array(par[1],c(1,1,1)), GGt = array(par[2],c(1,1,1)), ...)$logLik,
                  yt = rbind(y), a0 = a0, P0 = P0, dt = dt, ct = ct,
-                 Zt = Zt, Tt = Tt, check.input = FALSE)
+                 Zt = Zt, Tt = Tt)
 
-## Filter Nile data with estimated parameters:
-fkf.obj <- fkf(a0, P0, dt, ct, Tt, Zt, HHt = matrix(fit.fkf$par[1]),
-               GGt = matrix(fit.fkf$par[2]), yt = rbind(y))
+## Filter tree ring data with estimated parameters:
+fkf.obj <- fkf(a0, P0, dt, ct, Tt, Zt, HHt = array(fit.fkf$par[1],c(1,1,1)),
+               GGt = array(fit.fkf$par[2],c(1,1,1)), yt = rbind(y))
 
 ## Plot the width together with fitted local levels:
 plot(y, main = "Treering data")
@@ -150,5 +149,4 @@ plot(fkf.obj, type = "resid.qq")
 
 ## Test for autocorrelation:
 plot(fkf.obj, type = "acf", na.action = na.pass)
-
 

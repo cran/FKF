@@ -1,6 +1,6 @@
 Package: FKF
 Title: Fast Kalman Filter
-Version: 0.1.6
+Version: 0.1.7
 Authors@R: c(person(given = "David", family="Luethi", role=c("aut")),
 	    person(given = "Philipp", family="Erb", role=c("aut")),
 	    person(given = "Simon", family="Otziger", role=c("aut")),
@@ -20,7 +20,7 @@ Description: This is a fast and flexible implementation of the Kalman
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports: graphics
-Suggests: RUnit, knitr, rmarkdown, covr, bookdown
+Suggests: RUnit, knitr, rmarkdown, covr, pkgdown
 Depends: R(>= 2.8)
 BugReports: https://github.com/waternumbers/FKF/issues
 URL: https://waternumbers.github.io/FKF/,
@@ -28,11 +28,11 @@ URL: https://waternumbers.github.io/FKF/,
 NeedsCompilation: yes
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
-Packaged: 2020-06-01 18:13:53 UTC; paul
+Packaged: 2020-06-11 13:45:49 UTC; paul
 Author: David Luethi [aut],
   Philipp Erb [aut],
   Simon Otziger [aut],
   Paul Smith [cre] (<https://orcid.org/0000-0002-0034-3412>)
 Maintainer: Paul Smith <paul@waternumbers.co.uk>
 Repository: CRAN
-Date/Publication: 2020-06-01 19:10:02 UTC
+Date/Publication: 2020-06-14 14:50:15 UTC
