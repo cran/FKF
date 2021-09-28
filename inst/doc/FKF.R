@@ -16,7 +16,6 @@ ar2 <- 0.2
 ma1 <- -0.2
 sigma <- sqrt(0.2)
 
-## ----ex1_data-----------------------------------------------------------------
 a <- arima.sim(model = list(ar = c(ar1, ar2), ma = ma1), n = n,
                innov = rnorm(n) * sigma)
 
@@ -43,110 +42,41 @@ objective <- function(theta, yt) {
     return(-ans$logLik)
 }
 
+## ----ex1_opt------------------------------------------------------------------
 theta <- c(ar = c(0, 0), ma1 = 0, sigma = 1)
 fit <- optim(theta, objective, yt = rbind(a), hessian = TRUE)
-fit
 
-## ----the_rest-----------------------------------------------------------------
+## ----ex1_ci-------------------------------------------------------------------
 ## Confidence intervals
-rbind(fit$par - qnorm(0.975) * sqrt(diag(solve(fit$hessian))),
-      fit$par + qnorm(0.975) * sqrt(diag(solve(fit$hessian))))
+p <- cbind(actual = c(ar1=ar1,ar2=ar2,ma1=ma1,sigma=sigma),
+           estimate = fit$par,
+           lowerCI = fit$par - qnorm(0.975) * sqrt(diag(solve(fit$hessian))),
+           upperCI = fit$par + qnorm(0.975) * sqrt(diag(solve(fit$hessian))))
+p
 
-## Filter the series with estimated parameter values
+## ----filter-------------------------------------------------------------------
 sp <- arma21ss(fit$par["ar1"], fit$par["ar2"], fit$par["ma1"], fit$par["sigma"])
 ans <- fkf(a0 = sp$a0, P0 = sp$P0, dt = sp$dt, ct = sp$ct, Tt = sp$Tt,
            Zt = sp$Zt, HHt = sp$HHt, GGt = sp$GGt, yt = rbind(a))
 
-## Compare the prediction with the realization
+## ----pred---------------------------------------------------------------------
 plot(ans, at.idx = 1, att.idx = NA, CI = NA)
 lines(a, lty = "dotted")
 
-## Compare the filtered series with the realization
+## ----filt---------------------------------------------------------------------
 plot(ans, at.idx = NA, att.idx = 1, CI = NA)
 lines(a, lty = "dotted")
 
-## Check whether the residuals are Gaussian
+## ----guassian-----------------------------------------------------------------
 plot(ans, type = "resid.qq")
 
-## Check for linear serial dependence through 'acf'
+## ----acf----------------------------------------------------------------------
 plot(ans, type = "acf")
 
-## ----ex2----------------------------------------------------------------------
-## Transition equation:
-## alpha[t+1] = alpha[t] + eta[t], eta[t] ~ N(0, HHt)          
-## Measurement equation:
-## y[t] = alpha[t] + eps[t], eps[t] ~  N(0, GGt)
+## ----fks----------------------------------------------------------------------
+sm <- fks(ans)
 
-y <- Nile
-y[c(3, 10)] <- NA  # NA values can be handled
-
-## Set constant parameters:
-dt <- ct <- matrix(0) 
-Zt <- Tt <- matrix(1)
-a0 <- y[1]            # Estimation of the first year flow 
-P0 <- matrix(100)     # Variance of 'a0'
-
-## Estimate parameters:
-fit.fkf <- optim(c(HHt = var(y, na.rm = TRUE) * .5,
-                   GGt = var(y, na.rm = TRUE) * .5),
-                 fn = function(par, ...)
-                 -fkf(HHt = matrix(par[1]), GGt = matrix(par[2]), ...)$logLik,
-                 yt = rbind(y), a0 = a0, P0 = P0, dt = dt, ct = ct,
-                 Zt = Zt, Tt = Tt)
-
-## Filter Nile data with estimated parameters:
-fkf.obj <- fkf(a0, P0, dt, ct, Tt, Zt, HHt = matrix(fit.fkf$par[1]),
-               GGt = matrix(fit.fkf$par[2]), yt = rbind(y))
-
-## Compare with the stats' structural time series implementation:
-fit.stats <- StructTS(y, type = "level")
-
-fit.fkf$par
-fit.stats$coef
-
-## Plot the flow data together with fitted local levels:
-plot(y, main = "Nile flow")
-lines(fitted(fit.stats), col = "green")
-lines(ts(fkf.obj$att[1, ], start = start(y), frequency = frequency(y)), col = "blue")
-legend("top", c("Nile flow data", "Local level (StructTS)", "Local level (fkf)"),
-       col = c("black", "green", "blue"), lty = 1)
-
-
-## ----ex_3---------------------------------------------------------------------
-## Transition equation:
-## alpha[t+1] = alpha[t] + eta[t], eta[t] ~ N(0, HHt)
-## Measurement equation:
-## y[t] = alpha[t] + eps[t], eps[t] ~  N(0, GGt)
-
-y <- treering
-y[c(3, 10)] <- NA  # NA values can be handled
-
-## Set constant parameters:
-dt <- ct <- matrix(0)
-Zt <- Tt <- matrix(1) 
-a0 <- y[1]            # Estimation of the first width
-P0 <- matrix(100)     # Variance of 'a0'
-
-## Estimate parameters:
-fit.fkf <- optim(c(HHt = var(y, na.rm = TRUE) * .5,
-                   GGt = var(y, na.rm = TRUE) * .5),
-                 fn = function(par, ...)
-                   -fkf(HHt = array(par[1],c(1,1,1)), GGt = array(par[2],c(1,1,1)), ...)$logLik,
-                 yt = rbind(y), a0 = a0, P0 = P0, dt = dt, ct = ct,
-                 Zt = Zt, Tt = Tt)
-
-## Filter tree ring data with estimated parameters:
-fkf.obj <- fkf(a0, P0, dt, ct, Tt, Zt, HHt = array(fit.fkf$par[1],c(1,1,1)),
-               GGt = array(fit.fkf$par[2],c(1,1,1)), yt = rbind(y))
-
-## Plot the width together with fitted local levels:
-plot(y, main = "Treering data")
-lines(ts(fkf.obj$att[1, ], start = start(y), frequency = frequency(y)), col = "blue")
-legend("top", c("Treering data", "Local level"), col = c("black", "blue"), lty = 1)
-
-## Check the residuals for normality:
-plot(fkf.obj, type = "resid.qq")
-
-## Test for autocorrelation:
-plot(fkf.obj, type = "acf", na.action = na.pass)
+## ----fks_plot-----------------------------------------------------------------
+plot(sm)
+lines(a,col="black")
 

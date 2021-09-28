@@ -1,8 +1,8 @@
 # The Fast Kalman Filer Toolbox
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/waternumbers/FKF.svg?branch=master)](https://travis-ci.org/waternumbers/FKF)
-[![Coveralls test coverage](https://coveralls.io/repos/github/waternumbers/FKF/badge.svg)](https://coveralls.io/r/waternumbers/FKF?branch=master)
+[![R-CMD-check](https://github.com/waternumbers/FKF/workflows/R-CMD-check/badge.svg)](https://github.com/waternumbers/FKF/actions)
+[![codecov](https://codecov.io/gh/waternumbers/FKF/branch/master/graph/badge.svg?token=XzqU2C6K8i)](https://codecov.io/gh/waternumbers/FKF)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/waternumbers/FKF?branch=master&svg=true)](https://ci.appveyor.com/project/waternumbers/FKF)
 <!-- badges: end -->
 
@@ -23,6 +23,6 @@ devtools::install_github("waternumbers/FKF")
 ```
 
 Prebuild packages (usually including the latest development
-version) are available from the waternumbers drat repository [here](https://waternumbers.github.io/drat).
+version) are available from the waternumbers drat repository [here](https://waternumbers.github.io/drat/).
 
 
