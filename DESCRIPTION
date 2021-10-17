@@ -1,6 +1,6 @@
 Package: FKF
 Title: Fast Kalman Filter
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person(given = "David", family="Luethi", role=c("aut")),
 	    person(given = "Philipp", family="Erb", role=c("aut")),
 	    person(given = "Simon", family="Otziger", role=c("aut")),
@@ -32,7 +32,7 @@ NeedsCompilation: yes
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Packaged: 2021-09-28 10:09:02 UTC; paul
+Packaged: 2021-10-14 11:33:05 UTC; paul
 Author: David Luethi [aut],
   Philipp Erb [aut],
   Simon Otziger [aut],
@@ -40,4 +40,4 @@ Author: David Luethi [aut],
   Paul Smith [aut, cre] (<https://orcid.org/0000-0002-0034-3412>)
 Maintainer: Paul Smith <paul@waternumbers.co.uk>
 Repository: CRAN
-Date/Publication: 2021-09-28 10:50:02 UTC
+Date/Publication: 2021-10-17 20:10:06 UTC
