@@ -14,7 +14,7 @@ n <- 1000
 ar1 <- 0.6
 ar2 <- 0.2
 ma1 <- -0.2
-sigma <- sqrt(0.2)
+sigma <- sqrt(2)
 
 a <- arima.sim(model = list(ar = c(ar1, ar2), ma = ma1), n = n,
                innov = rnorm(n) * sigma)
@@ -78,5 +78,5 @@ sm <- fks(ans)
 
 ## ----fks_plot-----------------------------------------------------------------
 plot(sm)
-lines(a,col="black")
+lines(a,col="black", lty="dotted")
 
